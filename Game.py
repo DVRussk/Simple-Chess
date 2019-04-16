@@ -5,7 +5,8 @@ class Game:
     def __init__(self, profile):
         self.size, self.players, self.players_forces = profile.size, profile.players, profile.players_forces
         self.turn = profile.turn
-        self.board = Board(self.size, self.players, self.players_forces)
+        self.warlords_cords = profile.warlords_cords
+        self.board = Board(self.size, self.players, self.players_forces, self.warlords_cords)
 
     def start(self):
         while True:
@@ -24,10 +25,11 @@ class Game:
                     self.error(('IncorrectInput', "Start square and Finish square can't be the same square"))
                 else:
                     if self.board.cell(move_from).get_owner() == self.get_current_turn():
-                        move_response = self.board.move(move_from, move_to, self.get_current_turn())
+                        move_response = self.board.move(move_from, move_to)
                         if move_response[0]:
-                            if self.board.checkmate_check():
-                                self.endgame()
+                            result = self.board.checkmate_check()
+                            if result[0]:
+                                self.endgame(result[1])
                             self.change_turn()
                             break
                         else:
@@ -76,7 +78,7 @@ class Game:
     def transform(self, cords):
         return self.size.rows - int(cords[0]), ord(cords[1].lower()) - ord('a')
 
-    def endgame(self):
+    def endgame(self, end_data):
         # TODO
         # Here we will stop game in case of checkmate
         pass

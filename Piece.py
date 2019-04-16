@@ -34,11 +34,10 @@ class Piece:
                 rows_mod //= abs(rows_mod)
             if cols_mod != 0:
                 cols_mod //= abs(cols_mod)
-            print(rows_mod, cols_mod)
             for i in range(1, abs(mx)):
                 if field[self.cords[0] + i * rows_mod][self.cords[1] + i * cols_mod].get_owner() != 'Empty':
                     return False, f"Line isn't free. There is " \
-                        f"{field[self.cords[0] + i][self.cords[1] + i].get_owner()}'s" \
+                        f"{field[self.cords[0] + i * rows_mod][self.cords[1] + i * cols_mod].get_owner()}'s" \
                         f" piece on {(self.cords[0] + i * rows_mod, self.cords[1] + i * cols_mod)}"
                 pass
             return True, ''
